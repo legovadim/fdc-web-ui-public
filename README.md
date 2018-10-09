@@ -12,11 +12,11 @@ npm install -g @vue/cli
 1. Clone project and install dependencies 
 
 ```
-$ git clone https://github.com/smartmaxdev/fdcamplifydemo.git
+$ git clone https://github.com/FreelanceDeveloperCoach/fdc-web-ui.git
 ```
 
 ```
-$ cd fdcamplifydemo
+$ cd fdc-web-ui
 ```
 
 ```
@@ -43,7 +43,14 @@ Add auth
 ```
 $ amplify add auth
 ```
+Change Cognito User Attributes to Email address or phone number
+<img src="documentation/img/cognitouserattributes.png" width="480px" />
 
+add this code in the amplify/backend/auth/cognitoxxxx/cognitoxxxx-cloudformation-template.yml
+```
+UsernameAttributes:
+          - "email"
+```
 Provisions cloud resources with the latest local developments.
 ```
 $ amplify push
