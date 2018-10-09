@@ -8,6 +8,7 @@
        href="#"
        @click.prevent="collapseMenu">
       <i :class="link.icon"></i>
+      
       <p>{{link.name}}
         <b class="caret" :class="{rotated: !collapsed}"></b>
       </p>
@@ -28,11 +29,12 @@
         @click.native.stop="onItemClick"
         :href="link.path">
         <template v-if="addLink">
-          <span class="sidebar-mini-icon">{{link.name.substring(0, 1)}}</span>
+          <span class="sidebar-mini-icon">&nbsp</span>
+          <i :class="link.icon"></i>
           <span class="sidebar-normal">{{link.name}}</span>
         </template>
         <template v-else>
-          <i :class="link.icon"></i>
+          <i :class="link.icon">{{link.icon}}</i>
           <p>{{link.name}}</p>
         </template>
       </component>

@@ -2,93 +2,107 @@ export default [
 
   {
     name: 'Home',
-    icon: 'nc-icon nc-bank',
+    icon: 'fa fa-home',
     collapsed: false,
     children: [
 
       {
         name: 'Logout',
+        icon: 'fa fa-sign-out',
         path: '/logout'
       },
       {
         name: 'Password Reset',
+        icon: 'fa fa-unlock-alt',
         path: '/passwordreset'
       }
     ]
   },
   {
     name: 'Plan',
-    icon: 'nc-icon nc-single-copy-04',
+    icon: 'fa fa-tasks',
     collapsed: false,
     children: [{
       name: 'Time',
+      icon: 'fa fa-clock',
       path: '/plan/time'
     },
     {
       name: 'Income',
+      icon: 'fa fa-dollar-sign',
       path: '/plan/income'
     },
     {
       name: 'Projects',
+      icon: 'fa fa-project-diagram',
       path: '/plan/projects'
     }
     ]
   },
   {
     name: 'Act',
-    icon: 'nc-icon nc-tile-56',
+    icon: 'fa fa-file-alt',
     collapsed: false,
     children: [{
       name: 'Daily Dev Log',
+      icon: 'fa fa-calendar-alt',
       path: '/act/dailydevlog'
     },
     {
       name: 'What I\'ve Read',
+      icon: 'fa fa-book-reader',
       path: '/act/whatiread'
     },
     {
       name: 'Manager Access',
+      icon: 'fa fa-thumbtack',
       path: '/act/manageraccess'
     }
     ]
   },
   {
     name: 'Grow',
-    icon: 'nc-icon nc-spaceship',
+    icon: 'fa fa-rocket',
     collapsed: false,
     children: [{
       name: 'Strengths & Opportunities',
+      icon: 'fa fa-dumbbell',
       path: '/grow/strengthsopportunities'
     },
     {
       name: 'Current Focus',
+      icon: 'fa fa-bullseye-arrow',
       path: '/grow/currentfocus'
     },
     {
       name: 'What to Read',
+      icon: 'fa fa-book-open',
       path: '/grow/whattoread'
     },
     {
       name: 'Profile Editor',
+      icon: 'fa fa-user-edit',
       path: '/grow/profileeditor'
     }
     ]
   },
   {
     name: 'Account',
-    icon: 'nc-icon nc-single-02',
+    icon: 'fa fa-tasks',
     collapsed: false,
     children: [{
       name: 'Billing',
+      icon: 'fa fa-money-bill-wave',
       path: '/account/billing'
     },
     {
       name: 'Profile',
-      icon: 'nc-icon nc-box',
+      icon: 'fa fa-user-alt',
       path: '/account/profile'
     },
     {
       name: 'Affiliate',
+      icon: 'fa fa-hands-helping',
       path: '/account/affiliate'
     }
     ]
