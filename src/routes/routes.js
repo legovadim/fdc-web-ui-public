@@ -1,8 +1,8 @@
 import DashboardLayout from '../components/Common/Layout/DashboardLayout.vue'
 
-import SignIn from 'src/components/Home/SignIn.vue'
-import SignUp from 'src/components/Home/SignUp.vue'
+import Authenticator from 'src/components/Home/Authenticator.vue'
 import PasswordReset from 'src/components/Home/PasswordReset.vue'
+import Logout from 'src/components/Home/Logout.vue'
 
 import Affiliate from 'src/components/Account/Affiliate.vue'
 import Billing from 'src/components/Account/Billing.vue'
@@ -35,13 +35,13 @@ import NotFound from '../components/GeneralViews/NotFoundPage.vue'
 // import Lock from 'src/components/Common/Views/Pages/Lock.vue'
 
 // Components pages
-import Buttons from 'src/components/Common/Views/Components/Buttons.vue'
-import GridSystem from 'src/components/Common/Views/Components/GridSystem.vue'
-import Panels from 'src/components/Common/Views/Components/Panels.vue'
-import SweetAlert from 'src/components/Common/Views/Components/SweetAlert.vue'
-import Notifications from 'src/components/Common/Views/Components/Notifications.vue'
-import Icons from 'src/components/Common/Views/Components/Icons.vue'
-import Typography from 'src/components/Common/Views/Components/Typography.vue'
+// import Buttons from 'src/components/Common/Views/Components/Buttons.vue'
+// import GridSystem from 'src/components/Common/Views/Components/GridSystem.vue'
+// import Panels from 'src/components/Common/Views/Components/Panels.vue'
+// import SweetAlert from 'src/components/Common/Views/Components/SweetAlert.vue'
+// import Notifications from 'src/components/Common/Views/Components/Notifications.vue'
+// import Icons from 'src/components/Common/Views/Components/Icons.vue'
+// import Typography from 'src/components/Common/Views/Components/Typography.vue'
 
 // // Forms pages
 // const RegularForms  = () => import(/* webpackChunkName: "forms" */ 'src/components/Common/Views/Forms/RegularForms.vue')
@@ -161,13 +161,19 @@ let AccountMenu = {
 let signinPage = {
   path: '/signin',
   name: 'Sign In',
-  component: SignIn
+  component: Authenticator
 }
 
 let signupPage = {
   path: '/signup',
   name: 'Sign Up',
-  component: SignUp
+  component: Authenticator
+}
+
+let logoutPage = {
+  path:'/logout',
+  name: 'Logout',
+  component: Logout
 }
 
 let passwordResetPage = {
@@ -188,6 +194,7 @@ const routes = [
   GrowMenu,
   signinPage,
   signupPage,
+  logoutPage,
   passwordResetPage,
   {path: '*', component: NotFound}
 ];

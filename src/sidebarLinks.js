@@ -1,18 +1,14 @@
 export default [
- 
+
   {
     name: 'Home',
     icon: 'nc-icon nc-bank',
     collapsed: false,
     children: [
-      
+
       {
-        name: 'Sign Up',
-        path: '/signup'
-      },
-      {
-        name: 'Sign In',
-        path: '/signin'
+        name: 'Logout',
+        path: '/logout'
       },
       {
         name: 'Password Reset',
@@ -97,5 +93,5 @@ export default [
     }
     ]
   },
-  
+
 ]
