@@ -51,6 +51,31 @@ add this code in the amplify/backend/auth/cognitoxxxx/cognitoxxxx-cloudformation
 UsernameAttributes:
           - "email"
 ```
+
+example
+```
+  UserPool:
+  # Created upon user selection
+  # Depends on SNS Role for Arn if MFA is enabled
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: !Ref userPoolName
+      Schema: 
+        
+        -
+          Name: email
+          Required: true
+          Mutable: true
+        
+      
+      AutoVerifiedAttributes: !Ref autoVerifiedAttributes
+      UsernameAttributes:
+          - "email"
+      
+      EmailVerificationMessage: !Ref emailVerificationMessage
+      EmailVerificationSubject: !Ref emailVerificationSubject
+```
+
 Provisions cloud resources with the latest local developments.
 ```
 $ amplify push
