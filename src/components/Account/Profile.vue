@@ -4,7 +4,6 @@
     
         <loading :active.sync="isLoading" 
         :can-cancel="true" 
-        :on-cancel="onCancel"
         :is-full-page="fullPage"></loading>
         
     <div class="row">
@@ -147,7 +146,6 @@ export default {
       axios
       .get(process.env.VUE_APP_ROOT_API+'/users/'+'80586340-5b00-419b-8b45-9875e96770fd')//this should change later to username
       .then(response => {
-        console.log(response.data)
         this.userData = response.data
         this.isLoading = false;
       })
@@ -166,7 +164,6 @@ export default {
         }
       })//this should change later to username
       .then(response => {
-        console.log(response.data)
         this.getProfile()
       })
       .catch(error => {

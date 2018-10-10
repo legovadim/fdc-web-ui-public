@@ -21,51 +21,15 @@ import Income from 'src/components/Plan/Income.vue'
 import Projects from 'src/components/Plan/Projects.vue'
 import Time from 'src/components/Plan/Time.vue'
 
-// // GeneralViews
+// GeneralViews
 import NotFound from '../components/GeneralViews/NotFoundPage.vue'
-// // Common pages
-// const Overview = () => import(/* webpackChunkName: "widgets" */ 'src/components/Common/Views/Common/Overview.vue')
-// const Widgets = () => import(/* webpackChunkName: "widgets" */ 'src/components/Common/Views/Common/Widgets.vue')
-
-// // Pages
-// import User from 'src/components/Common/Views/Pages/UserProfile.vue'
-// import TimeLine from 'src/components/Common/Views/Pages/TimeLinePage.vue'
-// import Login from 'src/components/Common/Views/Pages/Login.vue'
-// import Register from 'src/components/Common/Views/Pages/Register.vue'
-// import Lock from 'src/components/Common/Views/Pages/Lock.vue'
-
-// Components pages
-// import Buttons from 'src/components/Common/Views/Components/Buttons.vue'
-// import GridSystem from 'src/components/Common/Views/Components/GridSystem.vue'
-// import Panels from 'src/components/Common/Views/Components/Panels.vue'
-// import SweetAlert from 'src/components/Common/Views/Components/SweetAlert.vue'
-// import Notifications from 'src/components/Common/Views/Components/Notifications.vue'
-// import Icons from 'src/components/Common/Views/Components/Icons.vue'
-// import Typography from 'src/components/Common/Views/Components/Typography.vue'
-
-// // Forms pages
-// const RegularForms  = () => import(/* webpackChunkName: "forms" */ 'src/components/Common/Views/Forms/RegularForms.vue')
-// const ExtendedForms = () => import(/* webpackChunkName: "forms" */ 'src/components/Common/Views/Forms/ExtendedForms.vue');
-// const ValidationForms = () => import(/* webpackChunkName: "forms" */ 'src/components/Common/Views/Forms/ValidationForms.vue')
-// const Wizard = () => import(/* webpackChunkName: "forms" */ 'src/components/Common/Views/Forms/Wizard.vue');
-
-// // TableList pages
-// const RegularTables = () => import(/* webpackChunkName: "tables" */ 'src/components/Common/Views/Tables/RegularTables.vue');
-// const ExtendedTables = () => import(/* webpackChunkName: "tables" */ 'src/components/Common/Views/Tables/ExtendedTables.vue');
-// const PaginatedTables = () => import(/* webpackChunkName: "tables" */ 'src/components/Common/Views/Tables/PaginatedTables.vue');
-// // Maps pages
-// const GoogleMaps = () => import(/* webpackChunkName: "maps" */ 'src/components/Common/Views/Maps/GoogleMaps.vue')
-// const FullScreenMap = () => import(/* webpackChunkName: "maps" */ 'src/components/Common/Views/Maps/FullScreenMap.vue')
-// const VectorMaps = () => import(/* webpackChunkName: "maps" */ 'src/components/Common/Views/Maps/VectorMapsPage.vue');
-
-// // Calendar
-// import Calendar from 'src/components/Common/Views/Calendar/CalendarRoute.vue'
-// // Charts
-// const Charts = () => import(/* webpackChunkName: "widgets" */ 'src/components/Common/Views/Charts.vue')
 
 let PlanMenu = {
   
   path: '/plan',
+  meta: { 
+    requiresAuth: true
+  },
   component: DashboardLayout,
   children: [
     {
@@ -89,6 +53,9 @@ let PlanMenu = {
 let ActMenu = {
   
   path: '/act',
+  meta: { 
+    requiresAuth: true
+  },
   component: DashboardLayout,
   children: [
     {
@@ -111,6 +78,9 @@ let ActMenu = {
 let GrowMenu = {
   
   path: '/grow',
+  meta: { 
+    requiresAuth: true
+  },
   component: DashboardLayout,
   children: [
     {
@@ -139,6 +109,9 @@ let AccountMenu = {
   
   path: '/account',
   component: DashboardLayout,
+  meta: { 
+    requiresAuth: true
+  },
   children: [
     {
       path: 'billing',
