@@ -8,10 +8,7 @@
               <a href="http://www.freelancedevelopercoach.com" target="_blank">Freelance Developer Coach</a>
             </li>
             <li>
-              <a href="http://blog.creative-tim.com/" target="_blank">Blog</a>
-            </li>
-            <li>
-              <a href="http://www.freelancedevelopercoach.com/license" target="_blank">Licenses</a>
+              <a href="http://www.freelancedevelopercoach.com" target="_blank">Blog</a>
             </li>
           </ul>
         </nav>

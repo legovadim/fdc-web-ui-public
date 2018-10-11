@@ -163,12 +163,12 @@
 }
 
 .table-responsive{
-  overflow: scroll;
-  padding-bottom: 10px;
+  overflow-x: scroll;
+  padding-bottom: -10px;
 }
 
 #tables .table-responsive{
-    margin-bottom: 30px;
+    margin-bottom: -10px;
 }
 
 .table-hover>tbody>tr:hover{

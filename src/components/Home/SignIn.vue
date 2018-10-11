@@ -1,69 +1,90 @@
+
 <template>
-  <div class="login-page">
-    <app-navbar></app-navbar>
-    <div class="wrapper wrapper-full-page">
-      <div class="full-page login-page section-image">
-        <!--   you can change the color of the filter page using: data-color="blue | azure | green | orange | red | purple" -->
-        <div class="content">
-          <div class="container">
-              <div class="col-lg-4 col-md-6 ml-auto mr-auto">
-                <card type="login">
-                  <h3 slot="header" class="header text-center">Login</h3>
-
-                  <fg-input v-model="form.username" addon-left-icon="nc-icon nc-single-02" placeholder="First Name..."></fg-input>
-
-                  <fg-input v-model="form.password" addon-left-icon="nc-icon nc-key-25" placeholder="Password" type="password"></fg-input>
-
-                  <br>
-
-                  <p-checkbox>
-                    Subscribe to newsletter
-                  </p-checkbox>
-
-                  <p-button slot="footer" type="warning" round block class="mb-3">Get started</p-button>
-                </card>
-              </div>
-          </div>
+  <div v-bind:class="amplifyUI.formSection">
+    <div v-bind:class="amplifyUI.sectionHeader">{{options.header}}</div>
+    <div v-bind:class="amplifyUI.sectionBody">
+      <div v-bind:class="amplifyUI.formField">
+        <div v-bind:class="amplifyUI.inputLabel">Email *</div>
+        <input v-bind:class="amplifyUI.input"  v-model="options.email" placeholder="Email" autofocus v-on:keyup.enter="signIn" />
+      </div>
+      <div v-bind:class="amplifyUI.formField">
+        <div v-bind:class="amplifyUI.inputLabel">Password *</div>
+        <input  v-bind:class="amplifyUI.input" v-model="password" type="password" placeholder="Password" v-on:keyup.enter="signIn" />
+        <div v-bind:class="amplifyUI.hint">
+          Forgot your password?
+          <a v-bind:class="amplifyUI.a" v-on:click="forgot">Reset</a>
         </div>
-        <app-footer></app-footer>
-        <div class="full-page-background" style="background-image: url(static/img/background/background-2.jpg) "></div>
       </div>
     </div>
+    <div v-bind:class="amplifyUI.sectionFooter">
+      <span v-bind:class="amplifyUI.sectionFooterPrimaryContent">
+        <button v-bind:class="amplifyUI.button" v-on:click="signIn">Sign In</button>
+      </span>
+      <span v-bind:class="amplifyUI.sectionFooterSecondaryContent">
+        No Account?
+        <a v-bind:class="amplifyUI.a" v-on:click="signUp">Sign Up</a>
+      </span>
+    </div>
+    <div class="error" v-if="error">
+      {{ error }}
+    </div>
   </div>
+              
 </template>
 <script>
-  import {Card, Checkbox, Button} from 'src/components/UIComponents';
-  import AppNavbar from 'src/components/Common/Views/Pages/Layout/AppNavbar'
-  import AppFooter from 'src/components/Common/Views/Pages/Layout/AppFooter'
-  export default {
-    components: {
-      Card,
-      AppNavbar,
-      AppFooter,
-      [Checkbox.name]: Checkbox,
-      [Button.name]: Button
+import * as AmplifyUI from "@aws-amplify/ui";
+import { AmplifyEventBus } from "aws-amplify-vue";
+import { Auth } from "aws-amplify";
+
+export default {
+  name: "SignIn",
+
+  props: ["signInConfig"],
+
+  data() {
+    return {
+      password: "",
+      error: "",
+      amplifyUI: AmplifyUI
+    };
+  },
+
+  computed: {
+    options() {
+      const defaults = {
+        header: "Sign In",
+        email: ""
+      };
+      return Object.assign(defaults, this.signInConfig || {});
+    }
+  },
+
+  methods: {
+    signIn: function() {
+      Auth.signIn(this.options.email, this.password)
+        .then(data => {
+          if (data.challengeName) {
+            console.log("confirm1");
+            AmplifyEventBus.$emit("localUser", data);
+            return AmplifyEventBus.$emit("authState", "confirmSignIn");
+          }
+          this.$router.push("/account/profile");
+          return AmplifyEventBus.$emit("authState", "signedIn");
+        })
+        .catch(e => this.setError(e));
     },
-    methods: {
-      toggleNavbar () {
-        document.body.classList.toggle('nav-open')
-      },
-      closeMenu () {
-        document.body.classList.remove('nav-open')
-        document.body.classList.remove('off-canvas-sidebar')
-      }
+
+    signUp: function() {
+      AmplifyEventBus.$emit("authState", "signUp");
     },
-    data() {
-      return {
-        form: {
-          username: '',
-          password: ''
-        }
-      }
+
+    forgot: function() {
+      AmplifyEventBus.$emit("authState", "forgotPassword");
     },
-    beforeDestroy () {
-      this.closeMenu()
+
+    setError: function(e) {
+      this.error = e.message || e;
     }
   }
+};
 </script>
-<style>
-</style>

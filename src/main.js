@@ -23,12 +23,24 @@ import './assets/sass/element_variables.scss'
 import './assets/sass/demo.scss'
 
 import sidebarLinks from './sidebarLinks'
+
+import Amplify, * as AmplifyModules from 'aws-amplify';
+import { AmplifyPlugin } from 'aws-amplify-vue';
+import aws_exports from './aws-exports';
+import { AmplifyEventBus } from "aws-amplify-vue";
+import { Auth } from "aws-amplify";
+
+Amplify.configure(aws_exports);
+Vue.use(AmplifyPlugin, AmplifyModules);
+
+Vue.config.productionTip = false
+
 // plugin setup
 Vue.use(VueRouter)
 Vue.use(GlobalDirectives)
 Vue.use(GlobalComponents)
 Vue.use(VueNotify)
-Vue.use(SideBar, {sidebarLinks: sidebarLinks})
+Vue.use(SideBar, { sidebarLinks: sidebarLinks })
 Vue.use(VeeValidate)
 locale.use(lang)
 
@@ -37,6 +49,25 @@ const router = new VueRouter({
   routes, // short for routes: routes
   linkActiveClass: 'active'
 })
+
+router.beforeEach((to, from, next) => {
+  
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    
+    Auth.currentAuthenticatedUser()
+      .then(user => {
+        if (!user) {
+          next({ path: '/signin', query: { redirect: to.fullPath }});
+          return;
+        }
+        next();
+      })
+      .catch(e => next({ path: '/signin', query: { redirect: to.fullPath }}));
+      
+  } else {
+    next();
+  }
+});
 
 initProgress(router);
 

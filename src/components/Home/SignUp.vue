@@ -1,109 +1,169 @@
 <template>
-  <div class="register-page">
-    <app-navbar></app-navbar>
-    <div class="wrapper wrapper-full-page ">
-      <div class="full-page register-page section-image" filter-color="black">
-        <div class="content">
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-5 col-md-5 ml-auto">
-                <info-section class="mt-5"
-                              type="primary"
-                              title="Marketing"
-                              description="We've created the marketing campaign of the website. It was a very interesting collaboration."
-                              icon="nc-icon nc-tv-2">
-
-                </info-section>
-                <info-section type="primary"
-                              title="Fully Coded in HTML5"
-                              description="We've developed the website with HTML5 and CSS3. The client has access to the code using GitHub."
-                              icon="nc-icon nc-html5">
-
-                </info-section>
-
-                <info-section type="primary"
-                              title="Built Audience"
-                              description="There is also a Fully Customizable CMS Admin Common for this product."
-                              icon="nc-icon nc-atom">
-
-                </info-section>
-              </div>
-              <div class="col-lg-4 col-md-6 mr-auto">
-                <card type="signup" class="text-center">
-                  <template slot="header">
-                    <h4 class="card-title">Register</h4>
-                    <div class="social">
-                      <button class="btn btn-icon btn-round btn-twitter">
-                        <i class="fa fa-twitter"></i>
-                      </button>
-                      <button class="btn btn-icon btn-round btn-dribbble">
-                        <i class="fa fa-dribbble"></i>
-                      </button>
-                      <button class="btn btn-icon btn-round btn-facebook">
-                        <i class="fa fa-facebook-f"></i>
-                      </button>
-                      <p class="card-description"> or be classical </p>
-                    </div>
-                  </template>
-
-                  <fg-input v-model="form.firstName" addon-left-icon="nc-icon nc-single-02" placeholder="First Name..."></fg-input>
-                  <fg-input v-model="form.lastName" addon-left-icon="nc-icon nc-circle-10" placeholder="Last Name..."></fg-input>
-                  <fg-input v-model="form.email" addon-left-icon="nc-icon nc-email-85" placeholder="Email..."></fg-input>
-                  <p-checkbox class="text-left" v-model="form.acceptTerms">
-                    I agree to the
-                    <a href="#something">terms and conditions</a>.
-                  </p-checkbox>
-
-                  <p-button slot="footer" type="info" round>Get Started</p-button>
-                </card>
-              </div>
-            </div>
-          </div>
-        </div>
-        <app-footer></app-footer>
-        <div class="full-page-background"
-             style="background-image: url(static/img/background/jan-sendereks.jpg) "></div>
+  
+  <div v-bind:class="amplifyUI.formSection">
+    <div v-bind:class="amplifyUI.sectionHeader">Sign Up</div>
+    <div v-bind:class="amplifyUI.sectionBody">
+      <div v-bind:class="amplifyUI.formField" 
+          v-for="signUpField in orderBy(this.options.signUpFields, 'displayOrder')" 
+          :signUpField="signUpField" 
+          v-bind:key="signUpField.key"
+        >
+        <div v-bind:class="amplifyUI.inputLabel">{{signUpField.label}} {{signUpField.required ? '*': ''}}</div>
+        <input 
+            :type = "signUpField.type" 
+            v-bind:class="[amplifyUI.input, signUpField.invalid ? 'invalid': '']" 
+            v-model="signUpField.value" 
+            :placeholder="signUpField.label"
+            v-on:change="clear(signUpField)" 
+          />
+        
       </div>
     </div>
+    <div v-bind:class="amplifyUI.sectionFooter">
+      <span v-bind:class="amplifyUI.sectionFooterPrimaryContent">
+        <button v-bind:class="amplifyUI.button" v-on:click="signUp">Create Account</button>
+      </span>
+      <span v-bind:class="amplifyUI.sectionFooterSecondaryContent">
+        Have an Account?
+        <a v-bind:class="amplifyUI.a" v-on:click="signIn">Sign In</a>
+      </span>
+    </div>
+    <div class="error" v-if="error_message">
+      {{ error_message }}
+    </div>
   </div>
+       
 </template>
 <script>
-  import AppNavbar from 'src/components/Common/Views/Pages/Layout/AppNavbar'
-  import AppFooter from 'src/components/Common/Views/Pages/Layout/AppFooter'
-  import { Card, Checkbox, Button, InfoSection } from 'src/components/UIComponents';
+import { AmplifyEventBus } from "aws-amplify-vue";
+import Vue from "vue";
+import * as AmplifyUI from "@aws-amplify/ui";
+import { Auth } from "aws-amplify";
 
-  export default {
-    components: {
-      Card,
-      AppNavbar,
-      AppFooter,
-      InfoSection,
-      [Checkbox.name]: Checkbox,
-      [Button.name]: Button
-    },
-    data(){
-      return {
-        form: {
-          firstName: '',
-          lastName: '',
-          email: '',
-          acceptTerms: true
+export default {
+  name: "SignUp",
+
+  async beforeCreate() {
+    try {
+      await Auth.currentAuthenticatedUser();
+      this.signedIn = true;
+    } catch (err) {
+      this.signedIn = false;
+    }
+    AmplifyEventBus.$on("authState", info => {
+      if (info === "signedIn") {
+        this.signedIn = true;
+      } else {
+        this.signedIn = false;
+      }
+    });
+  },
+
+  data() {
+    return {
+      amplifyUI: AmplifyUI,
+      error_message: "",
+      signedIn: false
+    };
+  },
+
+  computed: {
+    options() {
+      const defaults = {
+        header: "Sign Up",
+        signUpFields: [
+          {
+            label: "Email",
+            key: "email",
+            required: true,
+            type: "string",
+            displayOrder: 1
+          },
+          {
+            label: "Password",
+            key: "password",
+            required: true,
+            type: "password",
+            displayOrder: 2
+          }
+        ]
+      };
+      return Object.assign(defaults, this.signUpConfig || {});
+    }
+  },
+
+  methods: {
+    signUp: function() {
+      if (!this.validate()) {
+        return null;
+      }
+      let user = {
+        attributes: {}
+      };
+      this.options.signUpFields.forEach(e => {
+        if (e.key === "email") {
+          user.username = e.value;
+        } else if (e.key === "password") {
+          user.password = e.value;
+        } else {
+          user.attributes[e.key] = e.value;
         }
+      });
+
+      Auth.signUp(user)
+        .then(data => {
+          AmplifyEventBus.$emit("localUser", data.user);
+          if (data.userConfirmed === false) {
+            return AmplifyEventBus.$emit("authState", "confirmSignUp");
+          }
+          return AmplifyEventBus.$emit("authState", "signedOut");
+        })
+        .catch(e => this.setError(e));
+    },
+
+    signIn: function() {
+      AmplifyEventBus.$emit("authState", "signedOut");
+    },
+
+    validate: function() {
+      let allValid = true;
+      this.options.signUpFields.map(el => {
+        if (el.required && !el.value) {
+          allValid = false;
+          Vue.set(el, "invalid", true);
+        }
+        return el;
+      });
+      return allValid;
+    },
+
+    clear(field) {
+      if (field && field.invalid && field.value) {
+        Vue.set(field, "invalid", false);
       }
     },
-    methods: {
-      toggleNavbar() {
-        document.body.classList.toggle('nav-open')
-      },
-      closeMenu() {
-        document.body.classList.remove('nav-open')
-        document.body.classList.remove('off-canvas-sidebar')
-      }
-    },
-    beforeDestroy() {
-      this.closeMenu()
+
+    setError: function(e) {
+      this.error_message = e.message || e;
     }
   }
+};
 </script>
+
 <style>
+body {
+  margin: 0;
+}
+#app {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+.signout {
+  background-color: #ededed;
+  margin: 0;
+  padding: 11px 0px 1px;
+}
 </style>

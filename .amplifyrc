@@ -1,14 +1,14 @@
 {
     "providers": {
         "awscloudformation": {
-            "AuthRoleName": "fdcwebui-20181008212956-authRole",
-            "UnauthRoleArn": "arn:aws:iam::646459707360:role/fdcwebui-20181008212956-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::646459707360:role/fdcwebui-20181008212956-authRole",
+            "AuthRoleName": "fdcwebui-20181008220512-authRole",
+            "UnauthRoleArn": "arn:aws:iam::646459707360:role/fdcwebui-20181008220512-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::646459707360:role/fdcwebui-20181008220512-authRole",
             "Region": "us-east-1",
-            "DeploymentBucketName": "fdcwebui-20181008212956-deployment",
-            "UnauthRoleName": "fdcwebui-20181008212956-unauthRole",
-            "StackName": "fdcwebui-20181008212956",
-            "StackId": "arn:aws:cloudformation:us-east-1:646459707360:stack/fdcwebui-20181008212956/d5e22000-cb62-11e8-b8b1-500c219ab02a"
+            "DeploymentBucketName": "fdcwebui-20181008220512-deployment",
+            "UnauthRoleName": "fdcwebui-20181008220512-unauthRole",
+            "StackName": "fdcwebui-20181008220512",
+            "StackId": "arn:aws:cloudformation:us-east-1:646459707360:stack/fdcwebui-20181008220512/c28e0f00-cb67-11e8-acca-500c5240582a"
         }
     }
 }
