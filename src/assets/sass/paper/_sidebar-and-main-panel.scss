@@ -65,7 +65,7 @@
                 position: relative;
                 float: left;
                 z-index: 1;
-                display: inherit;
+                display: none;
                 color: $opacity-5;
               }
 
@@ -76,7 +76,6 @@
               i{
                 font-size: 17px;
                 line-height: 20px;
-                width: 26px;
               }
             }
         }

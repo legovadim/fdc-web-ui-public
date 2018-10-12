@@ -1,77 +1,101 @@
 <template>
-  <div class="vld-parent">
+  <div class="content">
     <!-- user profile -->
     
-        <loading :active.sync="isLoading" 
-        :can-cancel="true" 
-        :is-full-page="fullPage"></loading>
+    <loading :active.sync="isLoading" 
+    :can-cancel="true" 
+    :is-full-page="fullPage"></loading>
+
+    <div class="row">
         
-    <div class="row">
-      <div class="col-lg-4 col-sm-3">
-        <form>
-            <div class="form-group">
-              <label>Email address</label>
-              <fg-input  type="email" name="email" v-validate="modelValidations.email" :error="getError('email')" v-model="userData.email"></fg-input>
+      <div class="col-xl-5">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title">Profile Data</h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <fg-input placeholder="Enter email" label="Email address" v-validate="modelValidations.email" :error="getError('email')" v-model="userData.email"></fg-input>
+              </div>
             </div>
-            <div class="form-group">
-              <label>First Name</label>
-              <fg-input  type="firstname" name="firstname" v-validate="modelValidations.firstname" :error="getError('firstname')" v-model="userData.firstname"></fg-input>
+            <div class="row">
+              <div class="col">
+                <fg-input placeholder="Enter firstname" label="First Name" v-validate="modelValidations.firstname" :error="getError('firstname')" v-model="userData.firstname"></fg-input>
+              </div>
+              <div class="col">
+                <fg-input placeholder="Enter lastname" label="Last Name" v-validate="modelValidations.lastname" :error="getError('lastname')" v-model="userData.lastname"></fg-input>
+              </div>
             </div>
-            <div class="form-group">
-              <label>Last Name</label>
-              <fg-input  type="lastname" name="lastname" v-validate="modelValidations.lastname" :error="getError('lastname')" v-model="userData.lastname"></fg-input>
+            <div class="text-center">
+              <button class="btn btn-primary">
+                Update Profile
+              </button>
             </div>
-        </form>
+          </div>
+        </div>
       </div>
-    </div>
-    <!-- user market place table -->
-    <div class="row">
-      <div class="col-lg-12 card1 table-responsive">
-        <h4>Which marketplaces (Upwork, Golance, Fiverr, etc.) do you use?</h4>
-        <table cellspacing="0" cellpadding="0" border="0" class="el-table ">
-          <thead class="has-gutter">
-            <tr><th v-for="column in columns" :key="column.id">{{column}}</th></tr>
-          </thead>
-          <tbody>
-            <tr v-for="(marketplace,index) in userData.marketplaces"  :key="marketplace.id">
-              <td>{{marketplace.name}}</td>
-              <td>{{marketplace.profile_url}}</td>
-              <td style="width: 18%; height:50px;"><a href="#!" @click="deleete(index)"><i class="fa fa-times"></i></a></td>
-            </tr>
-            <tr>
-              <td>
-                <div class="input-field">
-                  <input class="form-control" placeholder="Name" ref="name" v-model="input.name" id="name" type="text">
-                </div>
-              </td>
-              <td>
-                <div class="input-field">
-                  <input class="form-control"  placeholder="Profile URL" v-model="input.profile_url" id="profile_url" type="text">
-                </div>
-              </td>
-              <td><a href="#!" @click="add" class="btn btn-waves">add</a></td>
-            </tr>
-          </tbody>
-        </table>
+      <!-- user market place table -->
+      <div class="col-xl-7">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title">Which marketplaces (Upwork, Golance, Fiverr, etc.) do you use?</h5>
+          </div>
+          <div class="card-body row">
+            <div class="col-sm-12">
+              <el-table :data="userData.marketplaces" header-row-class-name="text-primary">
+                <el-table-column prop="name" label="Marketplace"> </el-table-column>
+                <el-table-column prop="profile_url" label="Profile URL"> </el-table-column>
+                <el-table-column class-name="action-buttons td-actions" align="right" label="">
+
+                  <template slot-scope="props">
+
+                    <a href="#!" @click="deleete(props.$index)"><i class="fa fa-times"></i></a>
+
+                  </template>
+
+                </el-table-column>
+              </el-table>
+
+              <el-table :data="['']" :show-header="false">
+                <el-table-column> 
+                  <template slot-scope="props">          
+                    <fg-input placeholder="Name" class="mt-2" v-model="input.name"></fg-input>
+                  </template>
+                </el-table-column>
+                <el-table-column> 
+                  <template slot-scope="props">
+                    <fg-input placeholder="Profile URL"  class="mt-2" v-model="input.profile_url"></fg-input>
+                  </template>
+                </el-table-column>
+                <el-table-column class-name="action-buttons td-actions" align="right" label="">
+                  <template slot-scope="props">
+                    <a href="#!" @click="add" class="btn btn-waves">add</a>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-<!-- // submit button -->
-    <div class="row">
-      <a href="#!" @click="updateProfile" class="btn btn-success">Save</a>
+
     </div>
   </div>
 </template>
 <script>
+
+
+
 import { AmplifyEventBus } from "aws-amplify-vue";
 import { Auth } from "aws-amplify";
-import axios from 'axios';
+import axios from "axios";
 
-import Loading from 'vue-loading-overlay';
+import Loading from "vue-loading-overlay";
 
-import 'vue-loading-overlay/dist/vue-loading.css';
+import "vue-loading-overlay/dist/vue-loading.css";
 
 export default {
-  components: {Loading},
+  components: { Loading },
 
   async beforeCreate() {
     try {
@@ -90,9 +114,8 @@ export default {
     });
   },
 
-  mounted () {
-
-    this.getProfile()
+  mounted() {
+    this.getProfile();
   },
 
   data() {
@@ -100,17 +123,17 @@ export default {
       isLoading: false,
       fullPage: true,
       userData: {
-        "entity_id": "",
-        "version": "",
-        "changed_by_id": "",
-        "user_id": "",
-        "changed_on": "",
-        "firstname": "",
-        "lastname": "",
-        "email": "",
-        "marketplaces": []
+        entity_id: "",
+        version: "",
+        changed_by_id: "",
+        user_id: "",
+        changed_on: "",
+        firstname: "",
+        lastname: "",
+        email: "",
+        marketplaces: []
       },
-      
+
       modelValidations: {
         email: {
           required: true,
@@ -127,7 +150,7 @@ export default {
       },
 
       columns: ["Marketplace", "Profile URL", ""],
-      
+
       input: {
         name: "",
         profile_url: ""
@@ -138,38 +161,44 @@ export default {
       }
     };
   },
-  
-  methods: {
 
+  methods: {
     getProfile() {
       this.isLoading = true;
       axios
-      .get(process.env.VUE_APP_ROOT_API+'/users/'+'80586340-5b00-419b-8b45-9875e96770fd')//this should change later to username
-      .then(response => {
-        this.userData = response.data
-        this.isLoading = false;
-      })
-      .catch(error => {
-        console.log(error)
-        
-      })
-      .finally(() => this.isLoading = false)
+        .get(
+          process.env.VUE_APP_ROOT_API +
+            "/users/" +
+            "80586340-5b00-419b-8b45-9875e96770fd"
+        ) //this should change later to username
+        .then(response => {
+          this.userData = response.data;
+          this.isLoading = false;
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => (this.isLoading = false));
     },
     updateProfile() {
       this.isLoading = true;
       axios
-      .put(process.env.VUE_APP_ROOT_API+'/users', JSON.stringify(this.userData),{
-        headers: {
-            'Content-Type': 'application/json',
-        }
-      })//this should change later to username
-      .then(response => {
-        this.getProfile()
-      })
-      .catch(error => {
-        console.log(error)
-      })
-      .finally(() => this.isLoading = false)
+        .put(
+          process.env.VUE_APP_ROOT_API + "/users",
+          JSON.stringify(this.userData),
+          {
+            headers: {
+              "Content-Type": "application/json"
+            }
+          }
+        ) //this should change later to username
+        .then(response => {
+          this.getProfile();
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => (this.isLoading = false));
     },
 
     getError(fieldName) {
@@ -192,7 +221,6 @@ export default {
         this.input[key] = "";
       }
       this.$refs.name.focus();
-
     },
     //function to defintely delete data
     deleete: function(index) {
@@ -209,7 +237,10 @@ export default {
 }
 
 .card1 {
-    background-color: #FFFFFF;
-    
+  background-color: #ffffff;
+}
+
+.card {
+  width: 100%;
 }
 </style>

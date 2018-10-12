@@ -30,6 +30,10 @@ import aws_exports from './aws-exports';
 import { AmplifyEventBus } from "aws-amplify-vue";
 import { Auth } from "aws-amplify";
 
+import {Table, TableColumn} from 'element-ui'
+Vue.use(Table)
+Vue.use(TableColumn)
+
 Amplify.configure(aws_exports);
 Vue.use(AmplifyPlugin, AmplifyModules);
 
